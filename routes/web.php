@@ -1,48 +1,45 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Web\AuthWebController;
+use App\Http\Controllers\Web\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
-| Rutas públicas
+| RUTAS PÚBLICAS (WEB)
 |--------------------------------------------------------------------------
 */
 
-// Página inicio
+// Home
 Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+    return redirect()->route('login');
+});
 
-// Mostrar formulario registro
-Route::get('/register', function () {
-    return view('auth.register');
-})->name('register');
+// Login
+Route::get('/login', [AuthWebController::class, 'showLogin'])
+    ->name('login');
 
-// PROCESAR REGISTRO (🔥 ESTA ES LA QUE FALTABA 🔥)
-Route::post('/register', [AuthController::class, 'register'])
+Route::post('/login', [AuthWebController::class, 'login'])
+    ->name('login.post');
+
+// Register
+Route::get('/register', [AuthWebController::class, 'showRegister'])
+    ->name('register');
+
+Route::post('/register', [AuthWebController::class, 'register'])
     ->name('register.post');
 
-// Mostrar formulario login
-Route::get('/login', function () {
-    return view('auth.login');
-})->name('login');
-
-// Procesar login
-Route::post('/login', [AuthController::class, 'login'])
-    ->name('login.post');
+// Logout
+Route::post('/logout', [AuthWebController::class, 'logout'])
+    ->name('logout');
 
 /*
 |--------------------------------------------------------------------------
-| Rutas protegidas
+| RUTAS PROTEGIDAS (WEB)
 |--------------------------------------------------------------------------
 */
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->name('dashboard');
-
-    Route::post('/logout', [AuthController::class, 'logout'])
-        ->name('logout');
 });

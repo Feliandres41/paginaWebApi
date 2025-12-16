@@ -4,9 +4,8 @@
 
 @section('content')
 <div class="container">
-    <form method="POST" class="formulario" action="{{ route('register.post') }}">
+    <form method="POST" action="{{ route('register.post') }}">
         @csrf
-
         <div>
             <label for="name">Nombre</label>
             <input type="text" name="name" id="name" required>
@@ -32,8 +31,6 @@
         </div>
     </form>
 
-    <p>Ya tienes cuenta?
-        <a href="{{ route('login') }}">Iniciar sesión</a>
-    </p>
+    <p>Ya tienes cuenta? <a href="{{ route('login') }}">Iniciar sesión</a></p>
 </div>
 @endsection

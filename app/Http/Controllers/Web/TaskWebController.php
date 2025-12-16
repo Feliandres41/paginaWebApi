@@ -7,17 +7,20 @@ use Illuminate\Support\Facades\Http;
 
 class TaskWebController extends Controller
 {
-    public function store(Request $request)
+    public function store(Request $request, $projectId)
     {
+        $request->validate([
+            'title' => 'required|string'
+        ]);
+
         Http::withToken(session('api_token'))
-            ->post(config('services.api.url').'/tasks', [
-                'project_id' => $request->project_id,
-                'title' => $request->title,
-                'due_date' => $request->due_date
+            ->post("http://127.0.0.1:8000/api/projects/$projectId/tasks", [
+                'title' => $request->title
             ]);
 
         return back();
     }
+
 
     public function complete($id)
     {

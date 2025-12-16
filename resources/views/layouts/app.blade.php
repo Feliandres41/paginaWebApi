@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <title>@yield('title', 'Gestor de Proyectos')</title>
 
-    <!-- CSS GLOBAL -->
+    
+     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+     <link rel="stylesheet" href="{{ asset('css/tasks.css') }}">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 </head>
 <body>

@@ -1,16 +1,20 @@
-<div class="flex justify-between items-center mt-2">
-    <p>{{ $task['title'] }} - 
-        @if($task['is_completed'])
-            <span class="text-green-500">Completada</span>
-        @else
-            <span class="text-yellow-500">Pendiente</span>
-        @endif
-    </p>
-    @if(!$task['is_completed'])
-        <form method="POST" action="{{ route('tasks.complete', ['id' => $task['id']]) }}">
-            @csrf
-            @method('PUT')
-            <button class="text-blue-500">Marcar como completada</button>
-        </form>
-    @endif
+<div class="task {{ $task['is_completed'] ? 'done' : '' }}">
+
+    <form method="POST" action="{{ route('tasks.toggle', $task['id']) }}">
+        @csrf
+        @method('PATCH')
+
+        <button type="submit" class="check-btn">
+            {{ $task['is_completed'] ? '✔' : '○' }}
+        </button>
+    </form>
+
+    <div class="task-info">
+        <span class="task-title">{{ $task['title'] }}</span>
+
+        <span class="task-status">
+            {{ $task['is_completed'] ? 'Completada' : 'Pendiente (haz clic para completar)' }}
+        </span>
+    </div>
+
 </div>

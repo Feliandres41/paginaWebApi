@@ -1,0 +1,41 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* ===== TAREAS ===== */
+
+.task {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+    margin-bottom: 8px;
+    border-radius: 6px;
+    background: #f4f4f4;
+    transition: all 0.2s ease;
+}
+
+.task:hover {
+    background: #eaeaea;
+}
+
+.check-btn {
+    border: none;
+    background: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.task.done {
+    background: #e6f7e6;
+}
+
+.task.done .task-title {
+    text-decoration: line-through;
+    color: #666;
+}
+
+.task-status {
+    font-size: 12px;
+    color: #777;
+}

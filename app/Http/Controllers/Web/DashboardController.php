@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Collection;
 
 class DashboardController extends Controller
 {
@@ -18,7 +19,8 @@ class DashboardController extends Controller
             return redirect()->route('login');
         }
 
-        $projects = $response->json();
+        // 👇 ESTO ES CLAVE
+        $projects = collect($response->json());
 
         return view('dashboard.index', compact('projects'));
     }

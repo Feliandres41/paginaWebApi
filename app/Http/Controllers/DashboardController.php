@@ -16,21 +16,17 @@ class DashboardController extends Controller
 
     public function index()
     {
-        $response = $this->apiService->getAllProjects();
+        $token = session('api_token');
 
-        if (!$response['success']) {
-            return view('dashboard.index')->with('error', 'No se pudo conectar con la API');
+        $response = Http::withToken($token)
+            ->get(config('services.api.url') . '/projects');
+
+        if ($response->failed()) {
+            return redirect()->route('login');
         }
 
-        $projects = $response['data']['data'] ?? $response['data'] ?? [];
+        $projects = collect($response->json()); // 👈 AQUÍ LA SOLUCIÓN
 
-        // Calcular estadísticas
-        $stats = [
-            'total_projects' => count($projects),
-            'active_projects' => count(array_filter($projects, fn($p) => !($p['is_archived'] ?? false))),
-            'archived_projects' => count(array_filter($projects, fn($p) => $p['is_archived'] ?? false)),
-        ];
-
-        return view('dashboard.index', compact('projects', 'stats'));
+        return view('dashboard.index', compact('projects'));
     }
 }

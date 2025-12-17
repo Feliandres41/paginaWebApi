@@ -27,10 +27,10 @@
         <input type="email" name="email" value="{{ old('email') }}" required>
 
         <label for="password">Contraseña:</label>
-        <input type="password" name="password" required>
+        <input type="password" name="password" minlength="8" required>
 
         <label for="password_confirmation">Confirmar contraseña:</label>
-        <input type="password" name="password_confirmation" required>
+        <input type="password" name="password_confirmation" minlength="8" required>
 
         <button type="submit">Registrarse</button>
     </form>

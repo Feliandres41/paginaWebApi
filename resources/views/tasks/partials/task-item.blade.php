@@ -1,3 +1,4 @@
+
 <div class="task {{ $task['is_completed'] ? 'done' : '' }}">
 
     <form method="POST" action="{{ route('tasks.toggle', $task['id']) }}">

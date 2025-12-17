@@ -4,11 +4,20 @@ use App\Http\Controllers\Web\DashboardController;
 use App\Http\Controllers\Web\ProjectWebController;
 use App\Http\Controllers\Web\TaskWebController;
 
-// Auth
+Route::get('/', function () {
+    return view('auth.login');
+});
+
+
+// LOGIN
 Route::get('/login', [AuthWebController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthWebController::class, 'login']);
-Route::get('/register', [AuthWebController::class, 'showRegister'])->name('register');
-Route::post('/register', [AuthWebController::class, 'register']);
+
+// REGISTER
+Route::get('/register', [AuthWebController::class, 'showRegister'])->name('register.get');
+Route::post('/register', [AuthWebController::class, 'register.post']);
+
+// LOGOUT
 Route::post('/logout', [AuthWebController::class, 'logout'])->name('logout');
 
 // Protegidas
@@ -42,5 +51,15 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/projects/{project}/tasks', [TaskWebController::class, 'store'])
     ->name('tasks.store');
+    Route::patch('/projects/{project}/tasks/{task}/toggle', [TaskWebController::class, 'toggle'])
+    ->name('tasks.toggle');
+    
+    Route::post('/projects/{project}/tasks', [TaskWebController::class, 'store'])
+    ->name('tasks.store');
+
+    Route::patch(
+    '/projects/{project}/tasks/{task}/toggle',
+    [TaskWebController::class, 'toggle']
+    )->name('tasks.toggle');
 
 });

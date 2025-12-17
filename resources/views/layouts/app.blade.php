@@ -4,23 +4,35 @@
     <meta charset="UTF-8">
     <title>@yield('title', 'Gestor de Proyectos')</title>
 
-    
-     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-     <link rel="stylesheet" href="{{ asset('css/tasks.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 </head>
 <body>
 
-    <h1>Gestor de Proyectos</h1>
+    {{-- NAVBAR --}}
+    <nav class="navbar">
+        <h1 class="logo">Gestor de Proyectos</h1>
 
-    <form method="POST" action="{{ route('logout') }}">
-        @csrf
-        <button type="submit">Cerrar sesión</button>
-    </form>
+        @if(session()->has('api_token'))
+            {{-- USUARIO LOGUEADO --}}
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button class="logout-btn">Cerrar sesión</button>
+            </form>
+        @else
+            {{-- USUARIO NO LOGUEADO --}}
+            <div class="auth-links">
+                <a href="{{ route('login') }}">Iniciar sesión</a>
+                <a href="{{ route('register.get') }}">Registrarse</a>
+            </div>
+        @endif
+    </nav>
 
-    <hr>
-
-    @yield('content')
+    {{-- CONTENIDO PRINCIPAL --}}
+    <main class="main-content">
+        @yield('content')
+    </main>
 
 </body>
 </html>

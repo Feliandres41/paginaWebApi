@@ -10,18 +10,15 @@
 </head>
 <body>
 
-    {{-- NAVBAR --}}
     <nav class="navbar">
         <h1 class="logo">Gestor de Proyectos</h1>
 
         @if(session()->has('api_token'))
-            {{-- USUARIO LOGUEADO --}}
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
                 <button class="logout-btn">Cerrar sesión</button>
             </form>
         @else
-            {{-- USUARIO NO LOGUEADO --}}
             <div class="auth-links">
                 <a href="{{ route('login') }}">Iniciar sesión</a>
                 <a href="{{ route('register.get') }}">Registrarse</a>
@@ -29,7 +26,6 @@
         @endif
     </nav>
 
-    {{-- CONTENIDO PRINCIPAL --}}
     <main class="main-content">
         @yield('content')
     </main>

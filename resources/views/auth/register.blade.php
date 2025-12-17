@@ -9,7 +9,6 @@
 
     <h2>Registrarse</h2>
 
-    <!-- Mostrar errores si los hay -->
     @if ($errors->any())
         <ul>
             @foreach ($errors->all() as $error)
@@ -18,7 +17,6 @@
         </ul>
     @endif
 
-    <!-- Formulario de registro -->
     <form method="POST" action="{{ route('register.post') }}">
         @csrf
 

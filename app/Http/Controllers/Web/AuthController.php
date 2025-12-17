@@ -8,13 +8,11 @@ use Illuminate\Support\Facades\Http;
 
 class AuthController extends Controller
 {
-    // FORMULARIO
     public function showRegister()
     {
         return view('auth.register');
     }
 
-    // PROCESAR REGISTRO
     public function register(Request $request)
     {
         $response = Http::post('http://127.0.0.1:8000/api/register', [

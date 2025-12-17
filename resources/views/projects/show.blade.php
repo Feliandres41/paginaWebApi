@@ -1,33 +1,49 @@
-<h3>Nueva tarea</h3>
+@extends('layouts.app')
+
+@section('title', 'Proyecto')
+
+@section('content')
+
 <style>
     .task {
         display: flex;
         align-items: center;
         gap: 10px;
-        margin: 6px 0;
-        font-size: 16px;
-    }
-
-    .task .check-btn {
-        background: none;
-        border: none;
-        font-size: 18px;
-        cursor: pointer;
+        padding: 6px;
+        border-bottom: 1px solid #ddd;
     }
 
     .task.done .task-title {
         text-decoration: line-through;
-        color: #888;
+        color: #777;
+    }
+
+    .check-btn {
+        border: none;
+        background: none;
+        font-size: 18px;
+        cursor: pointer;
+    }
+
+    .back-btn {
+        display: inline-block;
+        margin-top: 20px;
     }
 </style>
 
+<h2>{{ $project['name'] }}</h2>
+
 <form method="POST" action="{{ route('tasks.store', $project['id']) }}">
     @csrf
-    <input type="text" name="title" placeholder="Escribe una tarea..." required>
-    <button type="submit">Agregar tarea</button>
+    <input type="text" name="title" placeholder="Nueva tarea" required>
+    <button type="submit">Agregar</button>
 </form>
 
 <hr>
+
+<a href="{{ route('dashboard') }}">Volver al menu principal</a>
+
+<h3>Tareas</h3>
 
 @if(empty($project['tasks']))
     <p>No hay tareas</p>
@@ -39,15 +55,13 @@
                 @csrf
                 @method('PATCH')
 
-                <button class="check-btn">
-                    {{ $task['is_completed'] ? '🟢' : '⭕' }}
+                <button>
+                    {{ $task['is_completed'] ? '🟢 Completa' : '⭕ Pendiente' }}
                 </button>
             </form>
 
-            <span class="task-title">{{ $task['title'] }}</span>
-            <span class="task-status">
-                {{ $task['is_completed'] ? 'Completada' : 'Pendiente' }}
-            </span>
+            <span>{{ $task['title'] }}</span>
         </div>
     @endforeach
 @endif
+@endsection

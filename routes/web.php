@@ -1,81 +1,40 @@
 <?php
-
-use Illuminate\Support\Facades\Route;
-
 use App\Http\Controllers\Web\AuthWebController;
 use App\Http\Controllers\Web\DashboardController;
 use App\Http\Controllers\Web\ProjectWebController;
 use App\Http\Controllers\Web\TaskWebController;
+use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| RUTA INICIAL
-|--------------------------------------------------------------------------
-*/
-Route::get('/', function () {
-    return redirect()->route('login');
-});
+Route::get('/', fn() => redirect()->route('login'));
 
-/*
-|--------------------------------------------------------------------------
-| AUTENTICACIÓN (WEB)
-|--------------------------------------------------------------------------
-*/
-Route::get('/login', [AuthWebController::class, 'showLogin'])
-    ->name('login');
+Route::get('/login', [AuthWebController::class, 'showLogin'])->name('login');
+Route::post('/login', [AuthWebController::class, 'login'])->name('login.post');
 
-Route::post('/login', [AuthWebController::class, 'login'])
-    ->name('login.post');
+Route::get('/register', [AuthWebController::class, 'showRegister'])->name('register');
+Route::post('/register', [AuthWebController::class, 'register'])->name('register.post');
 
-Route::post('/logout', [AuthWebController::class, 'logout'])
-    ->name('logout');
+Route::post('/logout', [AuthWebController::class, 'logout'])->name('logout');
 
-Route::get('/register', [AuthWebController::class, 'showRegister'])
-    ->name('register');
-
-Route::post('/register', [AuthWebController::class, 'register'])
-    ->name('register.post');
-
-/*
-|--------------------------------------------------------------------------
-| RUTAS PROTEGIDAS
-|--------------------------------------------------------------------------
-*/
 Route::middleware('auth')->group(function () {
 
-    // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->name('dashboard');
-
-    /*
-    |--------------------------------------------------------------------------
-    | PROYECTOS
-    |--------------------------------------------------------------------------
-    */
-    Route::get('/projects/create', [ProjectWebController::class, 'create'])
-        ->name('projects.create');
 
     Route::post('/projects', [ProjectWebController::class, 'store'])
         ->name('projects.store');
 
-    Route::get('/projects/{project}', [ProjectWebController::class, 'show'])
+    Route::get('/projects/create', [ProjectWebController::class, 'create'])
+        ->name('projects.create');
+
+    Route::get('/projects/{id}', [ProjectWebController::class, 'show'])
         ->name('projects.show');
 
-    Route::delete('/projects/{project}', [ProjectWebController::class, 'destroy'])
+    Route::delete('/projects/{id}', [ProjectWebController::class, 'destroy'])
         ->name('projects.destroy');
 
-    /*
-    |--------------------------------------------------------------------------
-    | TAREAS (DEPENDEN DEL PROYECTO)
-    |--------------------------------------------------------------------------
-    */
-    Route::post(
-        '/projects/{project}/tasks',
-        [TaskWebController::class, 'store']
-    )->name('tasks.store');
+    Route::post('/projects/{project}/tasks', [TaskWebController::class, 'store'])
+        ->name('tasks.store');
 
-    Route::patch(
-        '/projects/{project}/tasks/{task}/toggle',
-        [TaskWebController::class, 'toggle']
-    )->name('tasks.toggle');
+    Route::patch('/projects/{project}/tasks/{task}/toggle', [TaskWebController::class, 'toggle'])
+        ->name('tasks.toggle');
 });

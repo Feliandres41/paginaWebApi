@@ -9,7 +9,6 @@
 
     <h2>Iniciar sesión</h2>
 
-    <!-- Mostrar errores si los hay -->
     @if ($errors->any())
         <ul>
             @foreach ($errors->all() as $error)
@@ -18,7 +17,6 @@
         </ul>
     @endif
 
-    <!-- Formulario de login -->
     <form method="POST" action="{{ route('login.post') }}">
         @csrf
 
@@ -31,7 +29,7 @@
         <button type="submit">Iniciar sesión</button>
     </form>
 
-    <a href="{{ route('register.get') }}">¿No tienes cuenta? Regístrate aquí</a>
+    <a href="{{ route('register') }}">¿No tienes cuenta? Regístrate aquí</a>
 
 </body>
 </html>

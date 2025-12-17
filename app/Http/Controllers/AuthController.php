@@ -3,64 +3,86 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
-    public function showLoginForm()
+    // Mostrar formulario de login
+    public function showLogin()
     {
-        return view('login');
+        return view('auth.login');
     }
 
-    public function showRegisterForm()
-    {
-        return view('register');
-    }
-
+    // Iniciar sesión
     public function login(Request $request)
     {
-        $data = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required'
-        ]);
+        $credentials = $request->only('email', 'password');
 
-        $response = Http::post(env('API_URL') . '/login', $data);
+        // Validar las credenciales
+        if (Auth::attempt($credentials)) {
+            // Autenticación exitosa, obtener el usuario
+            $user = Auth::user();
 
-        if ($response->failed()) {
-            return back()->withErrors(['email' => 'Credenciales inválidas']);
+            // Generar el token (si usas API Token)
+            $token = $user->createToken('MyApp')->plainTextToken;
+
+            // Guardar el token en la sesión o devolverlo al frontend
+            session(['api_token' => $token]);
+
+            // Redirigir al dashboard
+            return redirect()->route('dashboard');
         }
 
-        $body = $response->json();
-        session(['api_token' => $body['token'], 'user' => $body['user']]);
-
-        return redirect()->route('dashboard');
+        // Si las credenciales no son correctas
+        return back()->withErrors(['email' => 'Las credenciales son incorrectas']);
     }
 
+    // Cerrar sesión
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect('/login');
+    }
+
+    // Mostrar formulario de registro
+    public function showRegister()
+    {
+        return view('auth.register');
+    }
+
+    // Procesar registro
     public function register(Request $request)
     {
-        $data = $request->validate([
+        // Validar los datos de registro
+        $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users',
+            'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6|confirmed',
         ]);
 
-        User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
+        if ($validator->fails()) {
+            return redirect()->route('register.get')
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        // Crear un nuevo usuario
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
         ]);
 
-        return redirect()->route('login')->with('success', 'Cuenta creada');
-    }
+        // Iniciar sesión automáticamente al registrar
+        Auth::login($user);
 
-    public function logout(Request $request)
-    {
-        $token = session('api_token');
-
-        Http::withToken($token)->post(env('API_URL') . '/logout');
-
-        $request->session()->flush();
-
-        return redirect()->route('login');
+        // Redirigir al dashboard
+        return redirect()->route('dashboard');
     }
 }

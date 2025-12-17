@@ -1,66 +1,59 @@
 <?php
-
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 
 class AuthWebController extends Controller
 {
-    // 🔐 FORMULARIO LOGIN
+    public function showRegister()
+    {
+        return view('auth.register');
+    }
     public function showLogin()
     {
         return view('auth.login');
     }
 
-    // 📝 FORMULARIO REGISTRO  ✅ ESTE FALTABA
-    public function showRegister()
-    {
-        return view('auth.register');
-    }
-
-    // 🔑 PROCESAR LOGIN (API)
     public function login(Request $request)
     {
-        $response = Http::post('http://127.0.0.1:8000/api/login', [
-            'email' => $request->email,
-            'password' => $request->password,
+        // Validar los datos de entrada
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|min:6',
         ]);
 
-        if ($response->failed()) {
-            return back()->withErrors([
-                'email' => 'Credenciales incorrectas'
-            ]);
+        // Intentar autenticar al usuario
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+            // Redirigir al dashboard si la autenticación fue exitosa
+            return redirect()->route('dashboard');
+        } else {
+            // Si las credenciales no son correctas, volver al login con un mensaje de error
+            return back()->withErrors(['email' => 'Credenciales incorrectas'])->withInput();
         }
-
-        // ✅ guardar token de la API
-        session(['api_token' => $response['token']]);
-
-        return redirect()->route('dashboard');
     }
 
-    // 📝 PROCESAR REGISTRO (API)
     public function register(Request $request)
     {
-        $response = Http::post('http://127.0.0.1:8000/api/register', [
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => $request->password,
-            'password_confirmation' => $request->password_confirmation,
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
         ]);
 
-        if ($response->failed()) {
-            return back()->withErrors($response->json());
-        }
+        // Creación del usuario
+        $user = User::create([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'password' => Hash::make($validated['password']),
+        ]);
 
-        return redirect()->route('login');
-    }
+        // Autenticación y redirección
+        auth()->login($user);
 
-    // 🚪 LOGOUT
-    public function logout()
-    {
-        session()->forget('api_token');
-        return redirect()->route('login');
+        return redirect()->route('dashboard');  
     }
 }

@@ -1,36 +1,43 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrarse</title>
+</head>
+<body>
 
-@section('title', 'Registrarse')
+    <h2>Registrarse</h2>
 
-@section('content')
-<div class="container">
+    <!-- Mostrar errores si los hay -->
+    @if ($errors->any())
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    @endif
+
+    <!-- Formulario de registro -->
     <form method="POST" action="{{ route('register.post') }}">
         @csrf
-        <div>
-            <label for="name">Nombre</label>
-            <input type="text" name="name" id="name" required>
-        </div>
 
-        <div>
-            <label for="email">Email</label>
-            <input type="email" name="email" id="email" required>
-        </div>
+        <label for="name">Nombre:</label>
+        <input type="text" name="name" value="{{ old('name') }}" required>
 
-        <div>
-            <label for="password">Contraseña</label>
-            <input type="password" name="password" id="password" required>
-        </div>
+        <label for="email">Correo electrónico:</label>
+        <input type="email" name="email" value="{{ old('email') }}" required>
 
-        <div>
-            <label for="password_confirmation">Confirmar Contraseña</label>
-            <input type="password" name="password_confirmation" id="password_confirmation" required>
-        </div>
+        <label for="password">Contraseña:</label>
+        <input type="password" name="password" required>
 
-        <div class="botonRegistro">
-            <button type="submit">Registrarse</button>
-        </div>
+        <label for="password_confirmation">Confirmar contraseña:</label>
+        <input type="password" name="password_confirmation" required>
+
+        <button type="submit">Registrarse</button>
     </form>
 
-    <p>Ya tienes cuenta? <a href="{{ route('login') }}">Iniciar sesión</a></p>
-</div>
-@endsection
+    <a href="{{ route('login') }}">¿Ya tienes cuenta? Inicia sesión</a>
+
+</body>
+</html>

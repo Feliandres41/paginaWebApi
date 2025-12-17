@@ -4,21 +4,22 @@ use App\Http\Controllers\Web\DashboardController;
 use App\Http\Controllers\Web\ProjectWebController;
 use App\Http\Controllers\Web\TaskWebController;
 
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\TaskController;
+
 Route::get('/', function () {
     return view('auth.login');
 });
 
+// Rutas de autenticación
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+Route::post('/login', [AuthController::class, 'login'])->name('login.post');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// LOGIN
-Route::get('/login', [AuthWebController::class, 'showLogin'])->name('login');
-Route::post('/login', [AuthWebController::class, 'login']);
-
-// REGISTER
-Route::get('/register', [AuthWebController::class, 'showRegister'])->name('register.get');
-Route::post('/register', [AuthWebController::class, 'register.post']);
-
-// LOGOUT
-Route::post('/logout', [AuthWebController::class, 'logout'])->name('logout');
+// Rutas de registro (Asegúrate de que estas rutas estén definidas correctamente)
+Route::get('/register', [AuthController::class, 'showRegister'])->name('register.get');
+Route::post('/register', [AuthController::class, 'register'])->name('register.post');
 
 // Protegidas
 Route::middleware('auth')->group(function () {
@@ -33,8 +34,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/projects', [ProjectWebController::class, 'store'])
         ->name('projects.store');
 
-    Route::get('/projects/{id}', [ProjectWebController::class, 'show'])
-        ->name('projects.show');
+    Route::get('/projects/{id}', [ProjectWebController::class, 'show'])->name('projects.show');
+
 
     Route::delete('/projects/{id}', [ProjectWebController::class, 'destroy'])
         ->name('projects.destroy');

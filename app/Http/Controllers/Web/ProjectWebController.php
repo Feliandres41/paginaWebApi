@@ -5,6 +5,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
+use App\Models\Project;
+
 class ProjectWebController extends Controller
 {
     public function create()
@@ -26,9 +28,11 @@ class ProjectWebController extends Controller
 
     public function show($id)
     {
-        $project = Http::withToken(session('api_token'))
-            ->get(config('services.api.url')."/projects/$id")
-            ->json();
+        $project = Project::find($id);
+
+        if (!$project) {
+            return redirect()->route('projects.index')->with('error', 'Proyecto no encontrado');
+        }
 
         return view('projects.show', compact('project'));
     }

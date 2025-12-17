@@ -1,66 +1,141 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+📌 Gestor de Tareas – Página Web
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Este proyecto es una aplicación web desarrollada en Laravel que consume una API REST para la gestión de proyectos y tareas.
 
-## About Laravel
+La aplicación permite a los usuarios:
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Registrarse
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Iniciar sesión
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Crear proyectos
 
-## Learning Laravel
+Agregar tareas a los proyectos
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Marcar tareas como completadas o pendientes
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+🚀 Tecnologías utilizadas
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Laravel 10
 
-## Laravel Sponsors
+PHP 8.2
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Blade (Vistas)
 
-### Premium Partners
+HTML / CSS
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+MySQL
 
-## Contributing
+API REST (Laravel)
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+🔗 Relación con la API
 
-## Code of Conduct
+Esta aplicación NO maneja directamente la base de datos de proyectos y tareas.
+Toda la información se obtiene y se envía a través de una API externa.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Repositorio de la API:
+👉 https://github.com/Feliandres41/projecTask
 
-## Security Vulnerabilities
+⚙️ Requisitos
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Antes de ejecutar el proyecto debes tener instalado:
 
-## License
+PHP 8.1 o superior
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Composer
+
+MySQL
+
+Servidor local (Laragon, XAMPP o similar)
+
+La API corriendo en un puerto (por defecto 8000)
+
+🛠️ Instalación
+
+1️⃣ Clonar el repositorio:
+
+git clone https://github.com/Feliandres41/paginaWebApi.git
+
+
+2️⃣ Entrar al proyecto:
+
+cd paginaWebApi
+
+
+3️⃣ Instalar dependencias:
+
+composer install
+
+
+4️⃣ Crear archivo .env:
+
+cp .env.example .env
+
+
+5️⃣ Generar la clave de la aplicación:
+
+php artisan key:generate
+
+🔧 Configuración de la API
+
+En el archivo .env, configura la URL de la API:
+
+API_URL=http://127.0.0.1:8000/api
+
+
+⚠️ Asegúrate de que la API esté corriendo antes de usar la aplicación web.
+
+▶️ Ejecutar la aplicación
+php artisan serve --port=8001
+
+
+Luego abre en el navegador:
+
+http://127.0.0.1:8001
+
+👤 Funcionalidades principales
+🔐 Autenticación
+
+Registro de usuarios
+
+Inicio y cierre de sesión
+
+Manejo de sesión mediante token de la API
+
+📁 Proyectos
+
+Crear proyectos
+
+Listar proyectos
+
+Ver detalle de un proyecto
+
+Eliminar proyectos
+
+✅ Tareas
+
+Crear tareas dentro de un proyecto
+
+Marcar tareas como completadas / pendientes
+
+Visualización clara del estado de la tarea
+
+📂 Estructura básica del proyecto
+app/
+ └── Http/
+     └── Controllers/
+         └── Web/
+             ├── AuthWebController.php
+             ├── DashboardController.php
+             ├── ProjectWebController.php
+             └── TaskWebController.php
+
+resources/
+ └── views/
+     ├── auth/
+     ├── dashboard/
+     └── projects/
+
+routes/
+ └── web.php
+

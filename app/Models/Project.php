@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Task; // ✅ ESTA LÍNEA ES CLAVE
 
 class Project extends Model
 {
@@ -12,6 +13,12 @@ class Project extends Model
     protected $fillable = [
         'name',
         'description',
-        'user_id'
+        'user_id',
+        'is_archived'
     ];
+
+    public function tasks()
+    {
+        return $this->hasMany(Task::class);
+    }
 }

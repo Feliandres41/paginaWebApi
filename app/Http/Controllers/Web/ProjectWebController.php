@@ -26,16 +26,21 @@ class ProjectWebController extends Controller
         return redirect()->route('dashboard');
     }
 
+
     public function show($id)
     {
-        $project = Project::find($id);
+        $response = Http::withToken(session('api_token'))
+            ->get(config('services.api.url') . "/projects/$id");
 
-        if (!$project) {
-            return redirect()->route('projects.index')->with('error', 'Proyecto no encontrado');
+        if ($response->failed()) {
+            return redirect()->route('dashboard');
         }
+
+        $project = $response->json();
 
         return view('projects.show', compact('project'));
     }
+
 
     public function destroy($id)
     {
